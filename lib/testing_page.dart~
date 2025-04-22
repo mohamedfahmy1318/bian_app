@@ -1,0 +1,73 @@
+// 📁 features/qibla - Flutter Qibla Direction Feature
+
+// Required dependencies in pubspec.yaml:
+// flutter_qiblah: ^2.1.0
+// location: ^5.0.0
+
+// 📌 CUBIT (presentation/cubit/qibla_cubit.dart)
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_qiblah/flutter_qiblah.dart';
+
+class QiblaCubit extends Cubit<QiblaState> {
+  QiblaCubit() : super(QiblaInitial());
+
+  void startQiblaStream() {
+    emit(QiblaLoading());
+    FlutterQiblah.qiblahStream.listen((event) {
+      emit(QiblaLoaded(direction: event.qiblah));
+    }, onError: (_) => emit(QiblaError('Sensor error')));
+  }
+}
+
+// 📌 STATE (presentation/cubit/qibla_state.dart)
+
+abstract class QiblaState {}
+
+class QiblaInitial extends QiblaState {}
+
+class QiblaLoading extends QiblaState {}
+
+class QiblaLoaded extends QiblaState {
+  final double direction;
+  QiblaLoaded({required this.direction});
+}
+
+class QiblaError extends QiblaState {
+  final String message;
+  QiblaError(this.message);
+}
+
+// 📌 UI (presentation/views/qibla_screen.dart)
+
+class QiblaScreen extends StatelessWidget {
+  const QiblaScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    context.read<QiblaCubit>().startQiblaStream();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Qibla Direction')),
+      body: BlocBuilder<QiblaCubit, QiblaState>(
+        builder: (context, state) {
+          if (state is QiblaLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is QiblaLoaded) {
+            return Center(
+              child: Transform.rotate(
+                angle: (state.direction * (pi / 180) * -1),
+                child: Image.asset('assets/images/compass.jpg', width: 250),
+              ),
+            );
+          } else if (state is QiblaError) {
+            return Center(child: Text(state.message));
+          }
+          return const SizedBox();
+        },
+      ),
+    );
+  }
+}

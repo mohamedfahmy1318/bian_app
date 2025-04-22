@@ -1,0 +1,38 @@
+// audio_player_service.dart
+import 'package:audioplayers/audioplayers.dart';
+import 'package:injectable/injectable.dart';
+
+@singleton
+class AudioPlayerService {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+  String? _currentAudioUrl;
+
+  Future<void> playAudio(String audioUrl) async {
+    try {
+      if (_isPlaying && _currentAudioUrl == audioUrl) {
+        await _audioPlayer.pause();
+        _isPlaying = false;
+        return;
+      }
+
+      await _audioPlayer.play(UrlSource(audioUrl));
+      _isPlaying = true;
+      _currentAudioUrl = audioUrl;
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
+  }
+
+  Future<void> stopAudio() async {
+    await _audioPlayer.stop();
+    _isPlaying = false;
+    _currentAudioUrl = null;
+  }
+
+  void dispose() {
+    _audioPlayer.dispose();
+  }
+
+  bool isPlaying(String audioUrl) => _isPlaying && _currentAudioUrl == audioUrl;
+}

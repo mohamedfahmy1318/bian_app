@@ -1,0 +1,22 @@
+import 'package:bloc/bloc.dart';
+import 'package:film/core/errors/failures.dart';
+import 'package:film/features/tabs/prayer/domain/entities/pray_time_entity.dart';
+import 'package:film/features/tabs/prayer/domain/use_cases/prayer_time_use_case.dart';
+import 'package:injectable/injectable.dart';
+import 'package:meta/meta.dart';
+
+part 'prayer_times_state.dart';
+
+@injectable
+class PrayerTimesCubit extends Cubit<PrayerTimesState> {
+  PrayerTimesCubit(this.prayerTimeUseCase) : super(PrayerTimesInitial());
+  PrayerTimeUseCase prayerTimeUseCase;
+  void getAllTimes() async {
+    emit(PrayerTimesLoading());
+    var result = await prayerTimeUseCase.call();
+    result.fold(
+      (error) => emit(PrayerTimesError(message: error)),
+      (response) => emit(PrayerTimesLoaded(times: response)),
+    );
+  }
+}

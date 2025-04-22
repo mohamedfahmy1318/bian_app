@@ -1,0 +1,20 @@
+import 'package:dartz/dartz.dart';
+import 'package:film/core/errors/failures.dart';
+import 'package:film/features/tabs/prayer/data/data_sources/remote_prayer_times_data_Sourse.dart';
+import 'package:film/features/tabs/prayer/domain/entities/pray_time_entity.dart';
+import 'package:film/features/tabs/prayer/domain/repositories/prayer_times_repo.dart';
+import 'package:injectable/injectable.dart';
+
+@Injectable(as: PrayerTimesRepo)
+class PrayerTimesRepoImp implements PrayerTimesRepo {
+  RemotePrayerTimesDataSource remotePrayerTimesDataSource;
+  PrayerTimesRepoImp(this.remotePrayerTimesDataSource);
+  @override
+  Future<Either<Failure, PrayTimeEntity>> getPrayerTimes() async {
+    var result = await remotePrayerTimesDataSource.getPrayerTimes();
+    return result.fold(
+      (error) => Left(error),
+      (response) => Right(response),
+    );
+  }
+}
