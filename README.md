@@ -1,16 +1,12 @@
-# لاهش
+🕌 Bian Islamic App
+Bail Islamic App is a comprehensive Islamic application built using Flutter, designed to help Muslims stay connected to their faith. It offers features such as Quran reading, Azkar, Prayer Times, Hijri Calendar, and more—all in a user-friendly and beautifully designed interface.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🌟 Features
+📖 Quran Reader – Read the Holy Quran with Surah and Juz navigation.
+🕋 Prayer Times – Accurate Salah times based on your location.
+🗓️ Hijri Calendar – View Islamic dates and important events.
+🔄 Azkar – Morning & Evening Azkar and Duas with counter.
+📍 Qibla Direction – Locate the Qibla with compass integration.
+🌙 Ramadan Mode – Suhoor & Iftar times with countdown.
+🌗 Dark Mode – Seamless light/dark theme switching.
+🌐 Multi-language Support – Supports Arabic and English.
